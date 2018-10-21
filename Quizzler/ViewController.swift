@@ -13,11 +13,15 @@ class ViewController: UIViewController {
     //Place your instance variables here
     var index: Int = 0;
     let allQuestions: QuestionBank = QuestionBank()
-    var currentQuestion : Question = Question(text: "", correctAnswer: false)
+
     
     let TRUE: Int = 1
     let FALSE: Int = 2
     var pickedAnswer: Bool = false;
+    
+    var score: Int = 0
+    
+   
     
     
     
@@ -30,8 +34,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
         
+        updateUI()
         
     }
 
@@ -49,36 +53,41 @@ class ViewController: UIViewController {
     
     
     func updateUI() {
-        currentQuestion  = allQuestions.list[index]
-        questionLabel.text = currentQuestion.question
-        
+        scoreLabel.text = "Score: \(score)"
+        progressLabel.text = "\(index+1)/\(allQuestions.list.count)"
+        questionLabel.text = allQuestions.list[index].question
+        progressBar.frame.size.width = (view.frame.size.width / CGFloat(allQuestions.list.count)) * CGFloat(index+1);
     }
     
 
     func nextQuestion() {
         index += 1
         if(index < allQuestions.list.count) {
-           updateUI()
+            updateUI()
         } else {
             showRestartAlert()
         }
+        
         
     }
     
     
     func checkAnswer() {
         if(pickedAnswer ==  allQuestions.list[index].answer) {
+            score += 1
+            
             nextQuestion()
         } else {
-            print("Nope...")
+            
+            nextQuestion()
         }
     }
     
     
     func startOver() {
        
-        self.index = 0
-        updateUI()
+        self.index = -1
+        nextQuestion()
     }
     
     func showRestartAlert() {
