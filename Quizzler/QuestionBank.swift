@@ -5,15 +5,22 @@
 //  Created by Karima on 18/10/2018.
 //  Copyright © 2018 London App Brewery. All rights reserved.
 //
-
+import UIKit
 import Foundation
+import Alamofire
+import SwiftyJSON
+
+
 
 class QuestionBank {
     
+    
+  
     var list = [Question]()
     
     init(){
         addQuestions()
+       
     }
     
     func addQuestions() {
@@ -47,5 +54,11 @@ class QuestionBank {
         list.append(Question(text: "No piece of square dry paper can be folded in half more than 7 times.", correctAnswer: false))
         
         list.append(Question(text: "Chocolate affects a dog\'s heart and nervous system; a few ounces are enough to kill a small dog.", correctAnswer: true))
+    
     }
+        
+    
+   
+    
+    
 }

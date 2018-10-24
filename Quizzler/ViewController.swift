@@ -7,13 +7,20 @@
 //
 
 import UIKit
+import SwiftyJSON
+import Alamofire
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, QuestionsDataDelegate {
+    
+    
     //todo: use question api
     
     //Place your instance variables here
+   
     var index: Int = 0;
     let allQuestions: QuestionBank = QuestionBank()
+    var apiHandler : ApiHandler = ApiHandler()
+    var questions = [Question]()
 
     
     let TRUE: Int = 1
@@ -21,6 +28,7 @@ class ViewController: UIViewController {
     var pickedAnswer: Bool = false;
     
     var score: Int = 0
+    var jsonData : JSON?
     
    
     
@@ -32,14 +40,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet var progressBar: UIView!
     @IBOutlet weak var progressLabel: UILabel!
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+        self.apiHandler.delegate = self
         
-        updateUI()
         
     }
-
+    
+    func hasReceivedData(data: [Question]) {
+        self.questions = data;
+        self.updateUI()
+    }
+    
 
     @IBAction func answerPressed(_ sender: AnyObject) {
   
@@ -54,16 +68,17 @@ class ViewController: UIViewController {
     
     
     func updateUI() {
+        print("updateui started")
         scoreLabel.text = "Score: \(score)"
-        progressLabel.text = "\(index+1)/\(allQuestions.list.count)"
-        questionLabel.text = allQuestions.list[index].question
-        progressBar.frame.size.width = (view.frame.size.width / CGFloat(allQuestions.list.count)) * CGFloat(index+1);
+        progressLabel.text = "\(index+1)/\(self.questions.count)"
+        questionLabel.text = self.questions[index].question
+        progressBar.frame.size.width = (view.frame.size.width / CGFloat(questions.count)) * CGFloat(index+1);
     }
     
 
     func nextQuestion() {
         index += 1
-        if(index < allQuestions.list.count) {
+        if(index < self.questions.count) {
             updateUI()
         } else {
             showRestartAlert()
@@ -74,7 +89,7 @@ class ViewController: UIViewController {
     
     
     func checkAnswer() {
-        if(pickedAnswer ==  allQuestions.list[index].answer) {
+        if(pickedAnswer ==  self.questions[index].answer) {
             score += 1
             ProgressHUD.showSuccess("Correct!")
             nextQuestion()
@@ -102,5 +117,9 @@ class ViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    
+    @IBAction func segueToQuestions(_ sender: Any) {
+        performSegue(withIdentifier: "goToQuestions", sender: self)
+    }
     
 }
