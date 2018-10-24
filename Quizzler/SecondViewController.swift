@@ -26,20 +26,9 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        /*apiHandler.getData { (data) in
-            print("data: \(data)")
-            self.apiHandler.asyncAddJsonToList(json: data["results"]) { (questionsData) in
-                self.questions = questionsData
-                
-                self.tableView.reloadData()
-            }
-         
-            
-            
-            
-        }*/
-        // Do any additional setup after loading the view.
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        rightSwipe.direction = .right
+        
         
         self.apiHandler.delegate = self
         tableView.delegate = self
@@ -48,7 +37,8 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.register(UINib(nibName: "QuestionCell", bundle: nil), forCellReuseIdentifier: "questionCell")
         resizeTableRow()
        
-       
+        
+       tableView.addGestureRecognizer(rightSwipe)
        
         
         
@@ -83,6 +73,16 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = UITableViewAutomaticDimension
+        
+    }
+    
+    @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
+        
+        if (sender.direction == .right) {
+            print("Swipe right")
+          
+            dismiss(animated: true, completion: nil)
+        }
         
     }
     /*

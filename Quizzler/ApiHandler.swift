@@ -15,7 +15,7 @@ protocol QuestionsDataDelegate : class {
 class ApiHandler {
     weak var delegate : QuestionsDataDelegate?
     
-    let QUESTIONS_URL : String = "https://opentdb.com/api.php?amount=10&difficulty=easy&type=boolean"
+    let QUESTIONS_URL : String = "https://opentdb.com/api.php?amount=20&difficulty=easy&type=boolean"
     var dataArray = [Question]()
     
     init() {
